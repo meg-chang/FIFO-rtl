@@ -1,37 +1,34 @@
-# 异步FIFO
+# 异步 FIFO（Async FIFO）
 
-#### 介绍
-学习异步FIFO项目
+> 一句话说明：基于格雷码指针 + 两级同步器的跨时钟域 FIFO，深度可配置，用于 100MHz→37MHz 数据缓冲。
 
-#### 软件架构
-软件架构说明
+## 1. 设计规格
+| 参数 | 值 |
+|---|---|
+| 数据位宽 | 8 bit |
+| 深度 | 16（参数化，需为 2 的幂） |
+| 写时钟 | 100 MHz |
+| 读时钟 | 37 MHz |
+| 资源开销 | XX 个寄存器 + 1 个双口 RAM |
 
+## 2. 架构
+（放一张架构图，或 ASCII 图）
+   写时钟域                              读时钟域
+   wptr(bin) →[bin2gray]→ wptr_gray →[两级同步]→ 判空
+   rptr_gray ←[两级同步]← rptr(bin) ←[bin2gray]← rptr(bin)
 
-#### 安装教程
+## 3. 关键设计点
+- **为什么用格雷码**：多 bit 指针跨时钟域直接同步会采到非法中间值……
+- **为什么深度必须 2 的幂**：格雷码在回绕处需保证单 bit 变化……
+- **假空/假满**：同步延迟导致判断偏保守，牺牲带宽换取正确性……
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## 4. 怎么跑仿真
+    cd sim && make          # 或: vsim -do run.do
 
-#### 使用说明
+## 5. 验证结果
+- 场景覆盖：慢写快读 / 快写慢读 / 同时读写 / 边界
+- scoreboard 比对通过，数据无丢失无重复
+- （附波形截图）
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## 6. 参考
+- Clifford Cummings, "Simulation and Synthesis Techniques for Asynchronous FIFO Design"
