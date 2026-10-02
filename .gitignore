@@ -1,0 +1,54 @@
+# ===== 仿真波形与临时产物（体积巨大，务必忽略）=====
+*.vcd
+*.wlf
+*.fsdb
+*.shm
+*.trn
+transcript
+work/
+simv*
+csrc/
+verdiLog/
+novas.*
+*.log
+*.jou
+*.pb
+*.DEBUG
+
+# ===== Vivado =====
+*.xpr
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.str
+vivado*.log
+vivado*.jou
+
+# ===== Quartus =====
+db/
+incremental_db/
+output_files/
+simulation/
+*.qws
+*.sopcinfo
+*.jdi
+
+# ===== ModelSim / Questa =====
+modelsim.ini
+vsim.wlf
+*.ucdb
+
+# ===== VCS / Verdi =====
+simv.daidir/
+*.daidir/
+
+# ===== 编辑器与系统 =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
