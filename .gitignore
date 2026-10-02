@@ -52,3 +52,13 @@ simv.daidir/
 *~
 .DS_Store
 Thumbs.db
+sim.out
+wave.vcd
+*.swp
+sim.out
+wave.vcd
+*.swp
+*.log
+*.vcd
+*.lxt
+*.fst
