@@ -1,15 +1,29 @@
-TOP		= tb_bin2gray
-RTL_DIR = ../rtl
-TB_DIR = ../tb
+TOP     ?= tb_bin2gray
+RTL_DIR := ../rtl
+TB_DIR  := ../tb
+RTL_SRC := $(wildcard $(RTL_DIR)/*.v)
+VFLAGS  := -Wall -g2005
 
-wave.vcd: $(TB_DIR)/$(TOP).v $(RTL_DIR)/bin2gray.v
-	iverilog -Wall -o sim.out $(TB_DIR)/$(TOP).v $(RTL_DIR)/bin2gray.v
-	vvp sim.out
+SIM_OUT := $(TOP).sim
+VCD     := $(TOP).vcd
 
-wave: wave.vcd
-	gtkwave wave.vcd &
+.DELETE_ON_ERROR:
+.PHONY: all wave lint clean
+
+all: $(VCD)
+
+$(VCD): $(SIM_OUT)
+	vvp $(SIM_OUT)
+	@mv -f wave.vcd $@
+
+$(SIM_OUT): $(TB_DIR)/$(TOP).v $(RTL_SRC)
+	iverilog $(VFLAGS) -o $@ $^
+
+wave: $(VCD)
+	gtkwave $(VCD) &
+
+lint:
+	iverilog $(VFLAGS) -tnull $(TB_DIR)/$(TOP).v $(RTL_SRC)
 
 clean:
-	rm -f sim.out wave.vcd
-
-.PHONY: all wave clean
+	rm -f *.sim *.vcd sim.out
